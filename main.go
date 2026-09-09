@@ -16,11 +16,15 @@ func main() {
 	fmt.Println(" ")
 	fmt.Println("Today is a", date)
 	fmt.Println("What would you like to do today?")
-
+	fmt.Print("> ")
 	for scanner.Scan() {
 		input := scanner.Text()
-
-		if input == "-help" {
+		if input == "quit" {
+			fmt.Println("Goodbye!")
+				break
+			}
+		switch input {
+		case "-help":
 			fmt.Println("Available commands:")
 			fmt.Println(" ", "add <task>")
 			fmt.Println(" ", "list")
@@ -29,12 +33,9 @@ func main() {
 			fmt.Println(" ", "clear")
 			fmt.Println(" ", "help")
 			fmt.Println(" ", "quit")
-		} 
-		if input == "quit" {
-				break
-			} else {
+		default:
 			fmt.Println("You want to:", input)
 		}
+		fmt.Print("> ")
 	}
-
 }

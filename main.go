@@ -44,6 +44,7 @@ loop:
 				todos[name] = newtodo
 			}
 		case "list":
+			listtodos()
 		case "delete":
 			if len(parts) < 2 {
 				fmt.Println("Give me a task!")

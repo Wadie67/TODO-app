@@ -26,7 +26,7 @@ loop:
 		switch parts[0] {
 		default:
 			fmt.Println("You want to:", parts[1])
-		case "-help":
+		case "help":
 			fmt.Println("Available commands:")
 			fmt.Println(" ", "add <task>")
 			fmt.Println(" ", "list")
@@ -40,7 +40,13 @@ loop:
 				fmt.Println("Give me a task!")
 			} else {
 				name := parts[1]
-				createtodo(scanner, name)
+				newtodo := createtodo(scanner, name)
+				todos[name] = newtodo
+			}
+		case "list":
+		case "delete":
+			if len(parts) < 2 {
+				fmt.Println("Give me a task!")
 			}
 		case "quit":
 			fmt.Println("Goodbye!")
@@ -69,6 +75,7 @@ func createtodo(scanner *bufio.Scanner, name string) todo {
 			continue
 		} else {
 			fmt.Println("You entered:", deadline.Format("3:05pm"))
+			fmt.Println("______________________________________________________________________________________________________")
 				fmt.Println("Successfully listed task, What else do you want")
 			break
 		}

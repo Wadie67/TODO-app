@@ -11,8 +11,5 @@ type todo struct{
 	completed bool
 }
 
-func taskmain() {
 
-	todos := make(map[string]todo)
-
-}
+var todos = make(map[string]todo)

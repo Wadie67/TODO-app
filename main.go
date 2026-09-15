@@ -31,7 +31,7 @@ loop:
 			fmt.Println(" ", "add <task>")
 			fmt.Println(" ", "list")
 			fmt.Println(" ", "done <number>")
-			fmt.Println(" ", "delete <number>")
+			fmt.Println(" ", "delete <task>")
 			fmt.Println(" ", "clear")
 			fmt.Println(" ", "help")
 			fmt.Println(" ", "quit")
@@ -48,6 +48,10 @@ loop:
 		case "delete":
 			if len(parts) < 2 {
 				fmt.Println("Give me a task!")
+			} else {
+				name := parts[1]
+				fmt.Println("Deleted", name)
+				delete(todos, name)
 			}
 		case "quit":
 			fmt.Println("Goodbye!")

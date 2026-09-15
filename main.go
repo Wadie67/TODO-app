@@ -14,6 +14,13 @@ func main() {
 	today := time.Now()
 	date := today.Weekday()
 	weather := getWeather()
+	err := initDB()
+
+	if err != nil {
+		fmt.Println("Database error:", err)
+		return
+	}
+	defer db.Close()
 
 	fmt.Println("Hello Wadie!")
 	fmt.Println(" ")
@@ -42,7 +49,12 @@ loop:
 			} else {
 				name := parts[1]
 				newtodo := createtodo(scanner, name)
-				todos[name] = newtodo
+				err := addTask(newtodo)
+				if err != nil {
+					fmt.Println("Could not save task:", err)
+				} else {
+				fmt.Println("Task saved!")
+				}
 			}
 		case "list":
 			listtodos()
@@ -51,8 +63,12 @@ loop:
 				fmt.Println("Give me a task!")
 			} else {
 				name := parts[1]
-				fmt.Println("Deleted", name)
-				delete(todos, name)
+				err := deleteTask(name)
+				if err != nil {
+					fmt.Println("Could not delete task:", err)
+				} else {
+					fmt.Println("Deleted", name)
+				}
 			}
 		case "quit":
 			fmt.Println("Goodbye!")
@@ -82,7 +98,6 @@ func createtodo(scanner *bufio.Scanner, name string) todo {
 		} else {
 			fmt.Println("You entered:", deadline.Format("3:05pm"))
 			fmt.Println("______________________________________________________________________________________________________")
-				fmt.Println("Successfully listed task, What else do you want")
 			break
 		}
 	}

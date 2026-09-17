@@ -5,11 +5,12 @@ import(
 	"fmt"
 )
 
-type todo struct{
-	name string
-	priority string	
-	deadline time.Time
-	completed bool
+type todo struct {
+	ID        uint `gorm:"primaryKey"`
+	Name      string
+	Priority  string
+	Deadline  time.Time
+	Completed bool
 }
 
 func listtodos() {
@@ -26,10 +27,10 @@ func listtodos() {
 
 	for i, task := range tasks {
 		fmt.Println("Task:", i+1)
-		fmt.Println("Name:", task.name)
-		fmt.Println("Priority:", task.priority)
-		fmt.Println("Deadline:", task.deadline.Format("3:04pm"))
-		fmt.Println("Completed:", task.completed)
+		fmt.Println("Name:", task.Name)
+		fmt.Println("Priority:", task.Priority)
+		fmt.Println("Deadline:", task.Deadline.Format("3:04pm"))
+		fmt.Println("Completed:", task.Completed)
 		fmt.Println()
 	}
 }

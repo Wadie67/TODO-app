@@ -20,7 +20,6 @@ func main() {
 		fmt.Println("Database error:", err)
 		return
 	}
-	defer db.Close()
 
 	fmt.Println("Hello Wadie!")
 	fmt.Println(" ")
@@ -33,12 +32,12 @@ loop:
 		parts := strings.SplitN(input, " ", 2)
 		switch parts[0] {
 		default:
-			fmt.Println("You want to:", parts[1])
+			fmt.Println("Type help!!")
 		case "help":
 			fmt.Println("Available commands:")
 			fmt.Println(" ", "add <task>")
 			fmt.Println(" ", "list")
-			fmt.Println(" ", "done <number>")
+			fmt.Println(" ", "done <task>")
 			fmt.Println(" ", "delete <task>")
 			fmt.Println(" ", "clear")
 			fmt.Println(" ", "help")
@@ -58,6 +57,18 @@ loop:
 			}
 		case "list":
 			listtodos()
+		case "done":
+			if len(parts) < 2 {
+				fmt.Println("Give me a task!")
+			} else {
+				name := parts[1]
+				err := completeTask(name)
+				if err != nil {
+					fmt.Println("Could not complete task:", err)
+				} else {
+					fmt.Println("Done with", name)
+				}
+			}
 		case "delete":
 			if len(parts) < 2 {
 				fmt.Println("Give me a task!")
@@ -69,6 +80,13 @@ loop:
 				} else {
 					fmt.Println("Deleted", name)
 				}
+			}
+		case "clear":
+			err := clearTasks()
+			if err != nil {
+				fmt.Println("Could not cleartasks", err)
+			} else {
+				fmt.Println("Cleared!")
 			}
 		case "quit":
 			fmt.Println("Goodbye!")
@@ -87,24 +105,37 @@ func createtodo(scanner *bufio.Scanner, name string) todo {
 
 	fmt.Println("When would you like this Task done?")
 	var deadline time.Time
+
 	for {
 		fmt.Print("> ")
 		scanner.Scan()
 		deadlineinput := scanner.Text()
-		deadline, err := time.Parse("3:05pm", deadlineinput)
-		if err != nil {
-			fmt.Println("Not a valid time vro</3")
-			continue
-		} else {
-			fmt.Println("You entered:", deadline.Format("3:05pm"))
-			fmt.Println("______________________________________________________________________________________________________")
-			break
-		}
+		today := time.Now()
+
+		parsedTime, err := time.Parse("3:05pm", deadlineinput)
+	if err != nil {
+		fmt.Println("Not a valid time vro</3")
+		continue
+	}
+	deadline = time.Date(
+		today.Year(),
+		today.Month(),
+		today.Day(),
+		parsedTime.Hour(),
+		parsedTime.Minute(),
+		0,
+		0,
+		today.Location(),
+	)
+	fmt.Println("You entered:", deadline.Format("3:04pm"))
+	fmt.Println("______________________________________________________________________________________________________")
+	break
 	}
 		return todo{
-		name:      name,
-		priority:  priority,
-		deadline:  deadline,
-		completed: false,
-	}
+		Name:      name,
+		Priority:  priority,
+		Deadline:  deadline,
+		Completed: false,
+		}
+
 }

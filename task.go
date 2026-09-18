@@ -1,16 +1,19 @@
 package main
 
-import(
-	"time"
+import (
 	"fmt"
+	"time"
 )
 
 type todo struct {
-	ID        uint `gorm:"primaryKey"`
-	Name      string
-	Priority  string
-	Deadline  time.Time
-	Completed bool
+	ID           uint `gorm:"primaryKey"`
+	Name         string
+	Priority     string
+	Deadline     time.Time
+	Completed    bool
+	ReminderSent bool
+	DeadlineSent bool
+	OverdueSent  bool
 }
 
 func listtodos() {

@@ -21,6 +21,13 @@ func main() {
 		return
 	}
 
+	go func() {
+		for {
+			checkDeadlines()
+			time.Sleep(30 * time.Second)
+		}
+	}()
+
 	fmt.Println("Hello Wadie!")
 	fmt.Println(" ")
 	fmt.Println("Today is a", weather, date)
@@ -52,7 +59,7 @@ loop:
 				if err != nil {
 					fmt.Println("Could not save task:", err)
 				} else {
-				fmt.Println("Task saved!")
+					fmt.Println("Task saved!")
 				}
 			}
 		case "list":
@@ -113,29 +120,29 @@ func createtodo(scanner *bufio.Scanner, name string) todo {
 		today := time.Now()
 
 		parsedTime, err := time.Parse("3:05pm", deadlineinput)
-	if err != nil {
-		fmt.Println("Not a valid time vro</3")
-		continue
+		if err != nil {
+			fmt.Println("Not a valid time vro</3")
+			continue
+		}
+		deadline = time.Date(
+			today.Year(),
+			today.Month(),
+			today.Day(),
+			parsedTime.Hour(),
+			parsedTime.Minute(),
+			0,
+			0,
+			today.Location(),
+		)
+		fmt.Println("You entered:", deadline.Format("3:04pm"))
+		fmt.Println("______________________________________________________________________________________________________")
+		break
 	}
-	deadline = time.Date(
-		today.Year(),
-		today.Month(),
-		today.Day(),
-		parsedTime.Hour(),
-		parsedTime.Minute(),
-		0,
-		0,
-		today.Location(),
-	)
-	fmt.Println("You entered:", deadline.Format("3:04pm"))
-	fmt.Println("______________________________________________________________________________________________________")
-	break
-	}
-		return todo{
+	return todo{
 		Name:      name,
 		Priority:  priority,
 		Deadline:  deadline,
 		Completed: false,
-		}
+	}
 
 }
